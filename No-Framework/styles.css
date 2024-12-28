@@ -1,3 +1,9 @@
+@font-face {
+	font-family: "LucideIcons";
+	src: url(https://unpkg.com/lucide-static@latest/font/Lucide.ttf)
+		format("truetype");
+}
+
 * {
 	margin: 0;
 	padding: 0;
