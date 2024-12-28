@@ -32,8 +32,10 @@
           <h2>Criar Nova Tarefa</h2>
           <span class="close" onclick="closeModal()">&times;</span>
         </div>
-        <input type="text" id="taskInput" placeholder="Digite sua tarefa aqui">
-        <button class="create-btn add" onclick="addTask()">Criar</button>
+        <form onsubmit={addTask()}>
+          <input type="text" id="taskInput" placeholder="Digite sua tarefa aqui">
+          <button class="create-btn add" type="submit">Criar</button>
+        </form>
       </div>
     </div>
     <section class="todo-list">
