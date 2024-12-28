@@ -1,6 +1,6 @@
 const { addTask, toggleTaskCompletion, deleteTask } = require("../task");
 
-describe("Task Management", () => {
+describe("Gerenciamento de tarefas na todo list", () => {
 	let todoList;
 	let completedList;
 	let tasks;
@@ -50,7 +50,7 @@ describe("Task Management", () => {
 		tasks = [];
 	});
 
-	it("addTask should add a new task to the todo list and update localStorage", () => {
+	it("Adiciona uma nova tarefa á Todo List e verifica a atualização do localStorage", () => {
 		const taskTitle = "New Task";
 
 		// Update tasks array when adding a task
@@ -69,7 +69,7 @@ describe("Task Management", () => {
 		expect(mockSaveTasks).toHaveBeenCalled();
 	});
 
-	test("toggleTaskCompletion should move task between lists and update localStorage", () => {
+	test("Move as tarefas entre as listas e atualiza o localStorage", () => {
 		const task = { title: "New Task", completed: false };
 		tasks.push(task);
 
@@ -101,7 +101,7 @@ describe("Task Management", () => {
 		);
 	});
 
-	test("deleteTask should remove the task and update localStorage", () => {
+	test("Remove a tarefa e atualiza o localStorage", () => {
 		const task = { title: "Task to delete", completed: false };
 		tasks.push(task);
 
