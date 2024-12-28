@@ -55,6 +55,21 @@ h1 {
 	transition: .5s ease-out;
 }
 
+.suggest-btn {
+	background-color: #333;
+	color: #ffffff;
+	border: 1px solid transparent;
+	padding: 0.75rem 1.25rem;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+.suggest-btn:hover {
+	background-color: #95bf20;
+	transition: .5s ease-out;
+}
+
 .todo-item {
 	display: flex;
 	align-items: center;

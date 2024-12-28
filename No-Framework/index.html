@@ -5,44 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To-Do List</title>
   <link rel="icon" href="./public/favicon.ico" type="image/x-icon">
-  <!-- Link para a fonte Inter do Google Fonts -->
+  <!-- Link do Google Fonts trazendo a fonte Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
     rel="stylesheet">
-  <!-- Link para o arquivo CSS -->
+  <!-- Link do CSS -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Link do JavaScript -->
+  <script defer src="script.js"></script>
 </head>
+
 <body>
   <main class="container">
     <header class="header">
       <h1>Todo</h1>
       <div>
         <button class="create-btn" aria-label="Criar uma nova tarefa" onclick="openModal()">Criar Tarefa</button>
-        <button class="create-btn" aria-label="Sugerir uma nova tarefa" onclick="fetchSuggestedTask()">Sugerir Tarefa</button>
+        <button class="suggest-btn" aria-label="Sugerir uma nova tarefa">Sugerir Tarefa</button>
       </div>
     </header>
     <div id="taskModal" class="modal">
       <div class="modal-content">
         <div class="modal-container">
           <h2>Criar Nova Tarefa</h2>
-          <span class="close" onclick="closeModal()">&times;</span> 
-          <!-- Botão com X para fechar o Modal -->
+          <span class="close" onclick="closeModal()">&times;</span>
         </div>
         <input type="text" id="taskInput" placeholder="Digite sua tarefa aqui">
-        <button class="create-btn" onclick="addTask()">Criar</button>
+        <button class="create-btn add" onclick="addTask()">Criar</button>
       </div>
     </div>
     <section class="todo-list">
       <ul id="tasksList"></ul>
     </section>
-    <!-- Lista de Todo's vai ser renderizada dentro da UL com id=taskList -->
     <section class="completed-list">
       <h2 class="completed-title">Finalizadas</h2>
       <ul id="completedTasksList"></ul>
     </section>
-    <!-- Lista de Completadas vai ser renderizada dentro da UL com id=completedTasksList -->
   </main>
 </body>
 </html>

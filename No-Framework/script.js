@@ -1,69 +1,67 @@
+// Aguarda o carregamento do DOM antes de executar o script
 document.addEventListener("DOMContentLoaded", () => {
+	// Elementos principais do DOM
 	const taskInput = document.getElementById("taskInput");
 	const todoList = document.querySelector(".todo-list ul");
 	const completedList = document.querySelector(".completed-list ul");
 
-	// Carrega as tasks para o LocalStorage
+	// Função para carregar as tarefas do localStorage
 	const loadTasks = () => {
-		// Realiza o parse das tasks para JSON, se houver tasks, se não carrega como um array vazio
-		const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-		// Comentário para ignorar o forEach do Lint
+		const tasks = JSON.parse(localStorage.getItem("tasks")) || []; // Busca as tarefas ou inicializa como um array vazio
 		// biome-ignore lint/complexity/noForEach: <explanation>
-		tasks.forEach((task) => renderTask(task));
+		tasks.forEach((task) => renderTask(task)); // Renderiza cada tarefa na lista apropriada
 	};
 
-	// Salva as tasks no LocalStorage
+	// Função para salvar as tarefas no localStorage
 	const saveTasks = () => {
-		const todoList = document.getElementById("tasksList");
-		const completedList = document.getElementById("completedTasksList");
-
-		if (!todoList || !completedList) return;
-
+		// Mapeia as tarefas da lista de Todo's
 		const tasks = Array.from(todoList.children).map((li) => ({
 			title: li.querySelector("h3").textContent,
 			completed: false,
 		}));
-		// Mapeia as tasks da lista de Todo's
 
+		// Mapeia as tarefas da lista de Concluídas
 		const completedTasks = Array.from(completedList.children).map((li) => ({
 			title: li.querySelector("h3").textContent,
 			completed: true,
 		}));
-		// Mapeia as tasks da lista de Completadas
 
+		// Salva ambas as listas no localStorage
 		localStorage.setItem(
 			"tasks",
 			JSON.stringify([...tasks, ...completedTasks]),
 		);
-		// Salva as tasks no LocalStorage passando um JSON para string com todas as tasks, tanto as completadas quanto as não completadas
 	};
 
-	// Renderiza as tasks presentes na loadTask()
+	// Função para renderizar uma tarefa na interface
 	const renderTask = (task) => {
+		// Cria elementos HTML para a tarefa
 		const li = document.createElement("li");
 		li.className = `todo-item ${task.completed ? "completed" : ""}`;
 
 		const container = document.createElement("div");
 		container.className = "todo-container";
 
+		// Ícone de círculo que indica status de conclusão
 		const circle = document.createElement("div");
 		circle.className = `todo-circle ${task.completed ? "checked" : "green"}`;
-		circle.addEventListener("click", () => toggleTaskCompletion(li, task));
+		circle.addEventListener("click", () => toggleTaskCompletion(li, task)); // Evento para alternar status de conclusão
 
+		// Adiciona o título da tarefa
 		const title = document.createElement("div");
 		title.className = "todo-title";
 		const h3 = document.createElement("h3");
 		h3.textContent = task.title;
 		title.appendChild(h3);
 
+		// Adiciona botão de deletar
 		const actions = document.createElement("div");
 		actions.className = "actions";
-
 		const deleteButton = document.createElement("button");
 		deleteButton.className = "action delete";
 		deleteButton.innerHTML =
 			'<img src="https://unpkg.com/lucide-static@latest/icons/trash.svg" />';
-		deleteButton.addEventListener("click", () => deleteTask(li));
+		deleteButton.addEventListener("click", () => deleteTask(li)); // Evento para deletar a tarefa
 
 		actions.appendChild(deleteButton);
 		container.appendChild(circle);
@@ -71,6 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		li.appendChild(container);
 		li.appendChild(actions);
 
+		// Adiciona o item à lista apropriada (Todo's ou Concluídas)
 		if (task.completed) {
 			completedList.appendChild(li);
 		} else {
@@ -78,73 +77,64 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	// Adiciona uma nova task vinda do input e salva no LocalStorage
-	window.addTask = function addTask() {
-		const taskInput = document.getElementById("taskInput");
-		const tasksList = document.getElementById("tasksList");
-		const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-		if (taskInput.value.trim() === "") return;
-
-		const newTask = {
-			title: taskInput.value,
-			completed: false,
-		};
-
-		tasks.push(newTask);
-		localStorage.setItem("tasks", JSON.stringify(tasks));
-
-		const taskItem = document.createElement("li");
-		taskItem.className = "todo-item";
-		taskItem.innerHTML = `<h3>${newTask.title}</h3>`;
-		tasksList.appendChild(taskItem);
-
-		taskInput.value = "";
+	// Função para adicionar uma nova tarefa
+	window.addTask = function addTask(title) {
+		if (!title || !title.trim()) return;
+		const task = { title, completed: false };
+		renderTask(task);
+		saveTasks();
 	};
 
-	// Inicia a função de completar as tasks
+	// Função para alternar as classes de uma tarefa (concluída ou não)
 	function toggleTaskClasses(circle, isCompleted) {
 		circle.classList.toggle("checked", isCompleted);
 		circle.classList.toggle("green", !isCompleted);
 	}
 
-	// Função para completar uma task e atualizar o LocalStorage
+	// Função para alternar o status de conclusão de uma tarefa
 	const toggleTaskCompletion = (li, task) => {
 		const circle = li.querySelector(".todo-circle");
 		li.classList.toggle("completed");
 
-		// Atualiza as classes do círculo
+		// Atualiza as classes visuais do círculo
 		toggleTaskClasses(circle, li.classList.contains("completed"));
 
+		// Move a tarefa para a lista correta Todo's ou Concluídas
 		const targetList = li.classList.contains("completed")
 			? completedList
 			: todoList;
 		targetList.appendChild(li);
+
 		saveTasks();
 	};
 
-	// Deleta uma task e atualiza o LocalStorage
+	// Função para deletar uma tarefa
 	const deleteTask = (li) => {
 		li.remove();
 		saveTasks();
 	};
 
-	// Função para adicionar uma task de sugestão, ela faz uma requisição para a API, adiciona todas as tasks ao LocalStorage e depois filtra as tasks não completadas em um array e seleciona uma task aleatória para adicionar
+	// Função para buscar uma tarefa sugerida da API
 	const fetchSuggestedTask = async () => {
 		try {
-			let tasks = JSON.parse(localStorage.getItem("tasksCache")) || [];
+			// Tenta carregar as tarefas do LocalStorage
+			let tasks = JSON.parse(localStorage.getItem("tasksCache"));
 
-			if (tasks.length === 0) {
+			// Se não houver nenhuma tarefa, busca as tarefas da API
+			if (!tasks) {
 				const response = await fetch(
 					"https://jsonplaceholder.typicode.com/todos",
 				);
-				if (!response.ok) throw new Error("Erro na requisição da API");
 				tasks = await response.json();
+
+				// Armazena as tarefas no LocalStorage para uso futuro
 				localStorage.setItem("tasksCache", JSON.stringify(tasks));
 			}
 
+			// Filtra tarefas não concluídas
 			const validTasks = tasks.filter((task) => !task.completed);
 
+			// Adiciona uma tarefa aleatória, se disponível
 			if (validTasks.length > 0) {
 				const randomTask =
 					validTasks[Math.floor(Math.random() * validTasks.length)];
@@ -157,32 +147,18 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 	};
 
-	// Seleciona o botão de adicionar task e adiciona um evento de click
-	const createButton = document.querySelector(
-		".create-btn[onclick='addTask()']",
-	);
-	if (createButton) {
-		createButton.addEventListener("click", () => {
-			addTask(taskInput.value);
-			taskInput.value = "";
-			closeModal();
-		});
+	// Adiciona eventos aos botões de criar e sugerir tarefas
+	document.querySelector(".create-btn.add").addEventListener("click", () => {
+		addTask(taskInput.value);
+		taskInput.value = "";
+		closeModal();
+	});
 
-    // Seleciona o botão de sugestão de task e adiciona um evento de click
-		const suggestButton = document.querySelector(
-			".create-btn[onclick='fetchSuggestedTask()']",
-		);
-		if (suggestButton) {
-			suggestButton.addEventListener("click", fetchSuggestedTask);
-		} else {
-			console.error("Botão de sugestão não encontrado.");
-		}
-	} else {
-		console.error("Botão de criação não encontrado.");
-	}
+	document.querySelector(".suggest-btn").addEventListener("click", () => {
+		fetchSuggestedTask();
+	});
 
-	// Carrega as tasks ao iniciar a página
-	loadTasks();
+	loadTasks(); // Carrega as tarefas ao iniciar
 });
 
 // Funções para abrir e fechar o modal
