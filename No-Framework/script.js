@@ -10,28 +10,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		// Comentário para ignorar o forEach do Lint
 		// biome-ignore lint/complexity/noForEach: <explanation>
 		tasks.forEach((task) => renderTask(task));
-		// Para cada task, inicia a função de renderizar a task.
 	};
 
 	// Salva as tasks no LocalStorage
 	const saveTasks = () => {
 		const todoList = document.getElementById("tasksList");
 		const completedList = document.getElementById("completedTasksList");
-		// Pega as listas
 
 		if (!todoList || !completedList) return;
-		// Verifica se os elementos existem
 
 		const tasks = Array.from(todoList.children).map((li) => ({
 			title: li.querySelector("h3").textContent,
-			// Cria um h3 com o titulo da task
 			completed: false,
 		}));
 		// Mapeia as tasks da lista de Todo's
 
 		const completedTasks = Array.from(completedList.children).map((li) => ({
 			title: li.querySelector("h3").textContent,
-			// Cria um h3 com o titulo da task
 			completed: true,
 		}));
 		// Mapeia as tasks da lista de Completadas
@@ -134,8 +129,36 @@ document.addEventListener("DOMContentLoaded", () => {
 		saveTasks();
 	};
 
-  // Seleciona o botão de adicionar task e adiciona um evento de click
-  const createButton = document.querySelector(
+	// Função para adicionar uma task de sugestão, ela faz uma requisição para a API, adiciona todas as tasks ao LocalStorage e depois filtra as tasks não completadas em um array e seleciona uma task aleatória para adicionar
+	const fetchSuggestedTask = async () => {
+		try {
+			let tasks = JSON.parse(localStorage.getItem("tasksCache")) || [];
+
+			if (tasks.length === 0) {
+				const response = await fetch(
+					"https://jsonplaceholder.typicode.com/todos",
+				);
+				if (!response.ok) throw new Error("Erro na requisição da API");
+				tasks = await response.json();
+				localStorage.setItem("tasksCache", JSON.stringify(tasks));
+			}
+
+			const validTasks = tasks.filter((task) => !task.completed);
+
+			if (validTasks.length > 0) {
+				const randomTask =
+					validTasks[Math.floor(Math.random() * validTasks.length)];
+				addTask(randomTask.title);
+			} else {
+				alert("Nenhuma tarefa disponível no momento.");
+			}
+		} catch (error) {
+			console.error("Erro ao buscar sugestão de tarefa:", error);
+		}
+	};
+
+	// Seleciona o botão de adicionar task e adiciona um evento de click
+	const createButton = document.querySelector(
 		".create-btn[onclick='addTask()']",
 	);
 	if (createButton) {
@@ -145,9 +168,22 @@ document.addEventListener("DOMContentLoaded", () => {
 			closeModal();
 		});
 
-    // Carrega as tasks ao iniciar a página
-    loadTasks();
-  })
+    // Seleciona o botão de sugestão de task e adiciona um evento de click
+		const suggestButton = document.querySelector(
+			".create-btn[onclick='fetchSuggestedTask()']",
+		);
+		if (suggestButton) {
+			suggestButton.addEventListener("click", fetchSuggestedTask);
+		} else {
+			console.error("Botão de sugestão não encontrado.");
+		}
+	} else {
+		console.error("Botão de criação não encontrado.");
+	}
+
+	// Carrega as tasks ao iniciar a página
+	loadTasks();
+});
 
 // Funções para abrir e fechar o modal
 function openModal() {
