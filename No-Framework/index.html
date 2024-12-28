@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Todo</h1>
+      <div>
+        <button class="create-btn" aria-label="Criar uma nova tarefa" onclick="openModal()">Criar Tarefa</button>
+        <button class="create-btn" aria-label="Sugerir uma nova tarefa" onclick="fetchSuggestedTask()">Sugerir Tarefa</button>
+      </div>
+    </header>
+    <div id="taskModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-container">
+          <h2>Criar Nova Tarefa</h2>
+          <span class="close" onclick="closeModal()">&times;</span> 
+          <!-- Botão com X para fechar o Modal -->
+        </div>
+        <input type="text" id="taskInput" placeholder="Digite sua tarefa aqui">
+        <button class="create-btn" onclick="addTask()">Criar</button>
+      </div>
+    </div>
+    <section class="todo-list">
+      <ul id="tasksList"></ul>
+    </section>
+    <!-- Lista de Todo's vai ser renderizada dentro da UL com id=taskList -->
+    <section class="completed-list">
+      <h2 class="completed-title">Finalizadas</h2>
+      <ul id="completedTasksList"></ul>
+    </section>
+    <!-- Lista de Completadas vai ser renderizada dentro da UL com id=completedTasksList -->
+  </main>
+</body>
+</html>
