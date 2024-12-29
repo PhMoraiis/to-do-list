@@ -1,0 +1,73 @@
+Parte 2: Perguntas Teóricas
+1. Questões de JavaScript:
+○ Explique a diferença entre var, let e const.
+var: é uma variável mais flexivel, podendo declarar várias vezes no mesmo escopo, e ainda sim continua funcionando, ela possuí o comportamento de "Hoisting" que é uma forma de subir para o topo de outro bloco do código.
+let: ainda é uma váriavel, porém menos flexivel que a var, não permite declaração varias vezes no mesmo escopo e respeita os blocos do código, sendo mais previsivel dentro de um bloco como if, ou for...
+const: é uma constante, não permite troca de valores, a menos que o const seja um array ou um objeto, podendo assim fazer retribuição do conteúdo.
+
+○ O que é o this em JavaScript, e como seu valor é determinado?
+O this é igual a uma referência, que muda o valor dependendo de como e onde é chamado dentro de uma função. Por exemplo: Em uma Arrow Function ele se mantém no valor do escopo onde foi criado; Em um Constructor ele vai apontar para o novo objeto criado, etc...
+
+○ Como funciona o modelo de eventos em JavaScript? Explique o conceito de
+"event bubbling" e "event delegation".
+Tudo começa com o disparo do evento, quando uma ação ocorre, como um clique em um botão, o evento é gerado pelo navegador, que detecta e cria um objeto com as informações do evento; Logo após é capturado pelos elementos na árvore DOM, que pode ocorrer de duas formas Captura e Bubbling. Quando o evento é disparado, o manipulador de evento que está associado irá executá-lo.
+
+event bubbling: quando o evento é disparado, ele borbulha para cima na árvore DOM, passando desde o elemento que foi acionado, como um botão, até o topo do documento.
+
+event delegation: o event delegation se aproveita do event bubbling, ao invés de adicionar manipuladores de eventos em cada elemento, como links, basta adicionar um único manipulador de evento em um elemento pai, que esse evento irá capturar os eventos dos elementos filhos, sendo identificados pelo o event.target.
+
+○ O que são Promises em JavaScript? Dê um exemplo básico de uso.
+Elas são uma promessa, elas representam um valor que pode não estar disponível no momento, mas em algum momento estará. Um exemplo de seu uso é em funções assíncronas, como buscar dados de uma API ou ler algum arquivo, etc
+
+function buscarUsuario(id) {
+    return fetch(`https://api.philipemorais.com/usuario/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Usuário não encontrado');
+            }
+            return response.json();
+        });
+}
+async function mostrarUsuario(id) {
+    try {
+        const usuario = await buscarUsuario(id);
+        console.log(usuario);
+    } catch (erro) {
+        console.error('Erro:', erro);
+    }
+}
+
+A função mostrarUsuario espera pelos dados vindos de uma requisição fetch. Ou seja, a execução da função só continua quando os dados da Promise retornada por buscarUsuario estiverem disponíveis. 
+
+○ O que é a função fetch e como ela funciona?
+A função fetch é usada para realizar requisições assincronas para servidores, como no exemplo da questão acima. Que retorna uma Promise com a resposta da requisição.
+No exemplo da questão acima o fetch envia a requisição, e retorna uma Promise, quando a Promise é satisfeita, podemos verificar se a resposta foi sucedida ou se ocorreu algum erro, se for válida podemos acessar a resposta. Podemos ainda usar diferentes Métodos HTTP como GET, PUT, DELETE, entre outros.
+
+2. Questões de Testes Unitários:
+○ O que são testes unitários e qual sua importância no desenvolvimento?
+São códigos que verificam se pequenas partes do software, está funcionando como o esperado, unitários	se refere as pequenas partes, ou seja por exemplo uma funcionalidade especifica, como autenticação de usuários que pode estar englobada em um contexto maior como login de usuários por exemplo. 
+
+Os testes unitários são de grande valia, podendo citar alguns pontos: Servem de documentação do código; Encontram os bugs antes de ir para a produção; Pode ser feito em conjunto com o desenvolvimento, como o TDD; Facilitam a refatoração e muito mais. 
+
+○ Explique a diferença entre testes unitários, testes de integração e testes de
+ponta a ponta.
+testes unitários: testam uma unidade isolada de código, pequenos blocos; São rápidos para serem feitos em comparação aos outros, pois são simples e focados em apenas a uma tarefa.
+testes de integração: testam como diferentes partes, se comportam juntas; É mais recomendado para testar múltiplos serviços, como APIs, banco de dados, etc.
+testes de ponta a ponta: testam fluxos completos de aplicações, simulando o comportamento de um usuário; É o mais demorado para ser feito e testado por ser bastante complexo.
+
+○ Como você faria para testar um componente que depende de uma API
+externa?
+Realizaria o Mock da API externa, simulando as respostas da API e depois verificaria o comportamento do componente que irá utilizar a API, com as diferentes respostas da API, antes e depois da requisição.
+
+3. Questões de Front-End Geral:
+○ Qual a diferença entre flexbox e grid no CSS? Quando usar cada um?
+Flexbox: usa uma dimensão (linha OU coluna), é ideal para alinhar itens, mais simples para layouts menores, como menu de navegação, lista de botões, etc.
+Grid: usa duas dimensões (linha E coluna), é mais indicado usar em layouts completos e estruturados como galerias, dashboards, etc.
+
+○ Explique o conceito de "responsividade" no design web e como garantir isso.
+Responsividade é criar aplicações que se ajustam automaticamente a diferentes tamanhos de tela e dispositivos, proporcionando uma boa experiência do usuário ao usar seja em smartphones, tablets, desktops, etc.
+
+Podemos definir Media-Queries no CSS que servem como um ponto para definir outras estilizações para um elemento de acordo com o tamanho da media-querie; Também podemos utilizar do flexbox e grid, e também ter projetar o design para dispositivos menores primeiros aplicando a técnica do Mobile-First, para facilitar a responsividade.
+
+○ O que é o DOM e qual sua importância no desenvolvimento web?
+O Document-Object-Model (DOM) permite que o conteúdo e a estrutura da página seja manipulada em tempo real. Ela permite que as páginas sejam dinâmicas e interativas, sem ele seria impossivel atualizar uma página sem fazer o recarregamento da página. Podemos definir como uma ponte entre o HTML estático e a funcionalidade dinâmica que o JavaScript fornece.

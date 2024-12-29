@@ -11,12 +11,12 @@ describe("Gerenciamento de tarefas na todo list", () => {
 		completedList = document.createElement("ul");
 		tasks = [];
 
-		// Create saveTasks implementation that updates localStorage
+		// Cria a função saveTasks que atualiza o localStorage
 		saveTasks = jest.fn(() => {
 			global.localStorage.setItem("tasks", JSON.stringify(tasks));
 		});
 
-		// Create a mock implementation for localStorage
+		// Cria uma implementação de Mock para o localStorage
 		const localStorageMock = (() => {
 			let store = {};
 			return {
@@ -33,7 +33,7 @@ describe("Gerenciamento de tarefas na todo list", () => {
 			};
 		})();
 
-		// Assign the mock to global.localStorage
+		// Mock global do localStorage
 		Object.defineProperty(global, "localStorage", {
 			value: localStorageMock,
 			writable: true,
@@ -53,7 +53,7 @@ describe("Gerenciamento de tarefas na todo list", () => {
 	it("Adiciona uma nova tarefa á Todo List e verifica a atualização do localStorage", () => {
 		const taskTitle = "New Task";
 
-		// Update tasks array when adding a task
+		// Atualiza o array de tarefas quando adiciona uma nova tarefa
 		const mockSaveTasks = jest.fn(() => {
 			tasks.push({ title: taskTitle, completed: false });
 			global.localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -78,7 +78,7 @@ describe("Gerenciamento de tarefas na todo list", () => {
 		const taskItems = todoList.querySelectorAll(".todo-item");
 		const taskItem = taskItems[0];
 
-		// Update task completion status when toggling
+		// Atualiza o status de complete da tarefa quando muda o estado
 		const mockSaveTasks = jest.fn(() => {
 			tasks[0].completed = true;
 			global.localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -110,7 +110,7 @@ describe("Gerenciamento de tarefas na todo list", () => {
 		const taskItems = todoList.querySelectorAll(".todo-item");
 		const taskItem = taskItems[0];
 
-		// Update tasks array when deleting a task
+		// Atualizando o array de tarefas quando deleta uma tarefa
 		const mockSaveTasks = jest.fn(() => {
 			tasks = tasks.filter((t) => t.title !== task.title);
 			global.localStorage.setItem("tasks", JSON.stringify(tasks));
