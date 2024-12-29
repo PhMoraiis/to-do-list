@@ -52,6 +52,9 @@ $ pnpm dev
 > **Nota**
 > Após você poderá acessar a aplicação em http://localhost:5173
 
+> **Deploy**
+> Se caso não quiser executar a aplicação pode acessar https://todolist.philipemorais.com
+
 ## Testes
 
 ### Rodando testes na aplicação sem framework
