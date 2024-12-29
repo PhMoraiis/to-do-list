@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="./No-Framework/public/favicon.ico" alt="Markdownify" width="200">
+  <img src="./No-Framework/public/favicon.ico" width="200">
   <br>
   Lista de Tarefas
   <br>
@@ -33,7 +33,7 @@ $ cd No-Framework
 > Para rodar a aplicação sem framework, você deve instalar alguma aplicação para executar um Servidor HTML, como a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) no VSCode.
 
 > **Github Pages**
-> Se caso não quiser executar a aplicação pode acessar 
+> Se caso não quiser executar a aplicação pode acessar http://phmoraiis.github.io/to-do-list
 
 ### Rodando Aplicação Vue.js
 ```bash
