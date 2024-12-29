@@ -33,7 +33,7 @@ $ cd No-Framework
 > Para rodar a aplicação sem framework, você deve instalar alguma aplicação para executar um Servidor HTML, como a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) no VSCode.
 
 > **Github Pages**
-> Se caso não quiser executar a aplicação pode acessar 
+> Se caso não quiser executar a aplicação pode acessar https://phmoraiis.github.io/to-do-list
 
 ### Rodando Aplicação Vue.js
 ```bash
@@ -51,6 +51,9 @@ $ pnpm dev
 ```
 > **Nota**
 > Após você poderá acessar a aplicação em http://localhost:5173
+
+> **Deploy**
+> Se caso não quiser executar a aplicação pode acessar https://todolist.philipemorais.com
 
 ## Testes
 
