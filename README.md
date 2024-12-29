@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="./No-Framework/public/favicon.ico" alt="Markdownify" width="200">
+  <img src="./public/favicon.ico" width="200">
   <br>
   Lista de Tarefas
   <br>
